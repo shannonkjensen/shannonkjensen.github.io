@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Newly Uncovered Fundamentals of Sunlight</title>
+  <script src="https://assets.meshmesh.io/system/tailwindcss-browser-4.js"></script>
+  <style type="text/tailwindcss">
+    @theme {
+      --color-primary: #032D60;
+      --color-secondary: #0176D3;
+      --color-accent: #04E1CB;
+      --color-surface: #EAF5FE;
+      --color-muted: #706E6B;
+      --color-success: #2E844A;
+      --color-warning: #FE9339;
+      --color-error: #EA001E;
+      --color-hero-start: #022AC0;
+      --color-hero-end: #066AFE;
+      --color-dark: #032D60;
+      --color-light: #F4F4F4;
+      --color-navy: #030528;
+      --font-display: 'ITC Avant Garde', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-body: 'Salesforce Sans', Arial, sans-serif;
+    }
+  </style>
+  <style>
+    @font-face { font-family: 'Salesforce Sans'; src: url('https://a.sfdcstatic.com/shared/fonts/salesforce-sans/SalesforceSans-Regular.woff2') format('woff2'); font-weight: 400; }
+    @font-face { font-family: 'Salesforce Sans'; src: url('https://a.sfdcstatic.com/shared/fonts/salesforce-sans/SalesforceSans-Bold.woff2') format('woff2'); font-weight: 700; }
+    @font-face { font-family: 'ITC Avant Garde'; src: url('https://a.sfdcstatic.com/shared/fonts/avant-garde/AvantGardeForSalesforceW05-Dm.woff2') format('woff2'); font-weight: 400; }
+
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+    @keyframes spin-slow { from{transform:rotate(0)} to{transform:rotate(360deg)} }
+    @keyframes wiggle { 0%,100%{transform:rotate(-3deg)} 50%{transform:rotate(3deg)} }
+    @keyframes fade-up { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+    .float { animation: float 4s ease-in-out infinite; }
+    .float-delay { animation: float 4s ease-in-out infinite; animation-delay: 1s; }
+    .spin-slow { animation: spin-slow 30s linear infinite; }
+    .wiggle { animation: wiggle 2s ease-in-out infinite; }
+    .fade-up { animation: fade-up 0.6s ease forwards; }
+
+    .card-hover { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .card-hover:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(3,45,96,0.1); }
+
+    details summary { cursor: pointer; list-style: none; }
+    details summary::-webkit-details-marker { display: none; }
+    details[open] .arrow { transform: rotate(90deg); }
+    .arrow { transition: transform 0.2s ease; display: inline-block; }
+
+    .cute-shadow { box-shadow: 0 8px 30px rgba(1,118,211,0.12); }
+    .cute-shadow-lg { box-shadow: 0 16px 60px rgba(1,118,211,0.15); }
+  </style>
+</head>
+<body class="font-body text-primary bg-white">
+
+  <!-- Cute Sun SVG (reusable) -->
+  <svg class="hidden">
+    <defs>
+      <symbol id="cute-sun" viewBox="0 0 120 120">
+        <!-- Rays -->
+        <g class="spin-slow" style="transform-origin:60px 60px">
+          <line x1="60" y1="8" x2="60" y2="22" stroke="#FE9339" stroke-width="4" stroke-linecap="round" opacity="0.6"/>
+          <line x1="60" y1="98" x2="60" y2="112" stroke="#FE9339" stroke-width="4" stroke-linecap="round" opacity="0.6"/>
+          <line x1="8" y1="60" x2="22" y2="60" stroke="#FE9339" stroke-width="4" stroke-linecap="round" opacity="0.6"/>
+          <line x1="98" y1="60" x2="112" y2="60" stroke="#FE9339" stroke-width="4" stroke-linecap="round" opacity="0.6"/>
+          <line x1="22" y1="22" x2="32" y2="32" stroke="#FE9339" stroke-width="4" stroke-linecap="round" opacity="0.4"/>
+          <line x1="88" y1="22" x2="98" y2="32" stroke="#FE9339" stroke-width="4" stroke-linecap="round" opacity="0.4"/>
+          <line x1="22" y1="98" x2="32" y2="88" stroke="#FE9339" stroke-width="4" stroke-linecap="round" opacity="0.4"/>
+          <line x1="88" y1="98" x2="98" y2="88" stroke="#FE9339" stroke-width="4" stroke-linecap="round" opacity="0.4"/>
+        </g>
+        <!-- Face circle -->
+        <circle cx="60" cy="60" r="30" fill="#FE9339"/>
+        <circle cx="60" cy="60" r="26" fill="#FFBA5C"/>
+        <!-- Eyes -->
+        <circle cx="50" cy="55" r="3.5" fill="#032D60"/>
+        <circle cx="70" cy="55" r="3.5" fill="#032D60"/>
+        <circle cx="51" cy="53.5" r="1.2" fill="white"/>
+        <circle cx="71" cy="53.5" r="1.2" fill="white"/>
+        <!-- Happy mouth -->
+        <path d="M50 66 Q55 74 60 74 Q65 74 70 66" fill="none" stroke="#032D60" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- Rosy cheeks -->
+        <circle cx="44" cy="64" r="4" fill="#FF8A65" opacity="0.4"/>
+        <circle cx="76" cy="64" r="4" fill="#FF8A65" opacity="0.4"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <!-- Navigation -->
+  <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <svg class="w-8 h-8"><use href="#cute-sun"/></svg>
+        <span class="font-display text-primary text-sm tracking-tight hidden sm:inline">Fundamentals of Sunlight</span>
+      </div>
+      <div class="flex gap-5 text-xs font-bold text-muted">
+        <a href="#overview" class="hover:text-secondary transition-colors">Overview</a>
+        <a href="#effects" class="hover:text-secondary transition-colors">Core Effects</a>
+        <a href="#iron" class="hover:text-secondary transition-colors">Iron Axis</a>
+        <a href="#compare" class="hover:text-secondary transition-colors">Compare</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="relative overflow-hidden bg-gradient-to-br from-hero-start to-hero-end px-6 py-20 md:py-28">
+    <div class="absolute -top-10 -right-10 w-48 h-48 bg-accent/20 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-0 left-10 w-32 h-32 bg-warning/10 rounded-full blur-3xl"></div>
+
+    <div class="max-w-5xl mx-auto text-center relative z-10">
+      <!-- Cute floating sun -->
+      <div class="float mb-8">
+        <svg class="w-24 h-24 md:w-32 md:h-32 mx-auto drop-shadow-lg"><use href="#cute-sun"/></svg>
+      </div>
+
+      <h1 class="font-display text-3xl sm:text-4xl md:text-6xl text-white font-normal tracking-tight leading-[1.1] mb-6">
+        Newly Uncovered<br>
+        <span class="text-accent">Fundamentals of Sunlight</span>
+      </h1>
+      <p class="text-white/70 text-base md:text-lg max-w-2xl mx-auto mb-3 italic">in Vertebrate Biology</p>
+      <p class="text-white/60 text-sm max-w-xl mx-auto leading-relaxed">
+        A treatise by David Wendlandt, M.D. exploring why the true benefits of sun exposure come from
+        <strong class="text-accent/90">elemental detoxification</strong> and <strong class="text-accent/90">iron withholding</strong>&mdash;not vitamin D synthesis.
+      </p>
+
+      <div class="mt-10">
+        <a href="#overview" class="inline-flex items-center gap-2 bg-white text-primary font-display text-sm px-6 py-3 rounded-full hover:bg-white/90 transition-colors">
+          Explore the Science
+          <span class="text-lg">&darr;</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Bottom curve -->
+    <div class="absolute bottom-0 left-0 right-0">
+      <svg viewBox="0 0 1440 60" fill="none"><path d="M0 60 C480 0 960 60 1440 0 L1440 60 L0 60Z" fill="white"/></svg>
+    </div>
+  </header>
+
+  <!-- Central Thesis -->
+  <section id="overview" class="py-16 px-6">
+    <div class="max-w-4xl mx-auto">
+      <div class="bg-surface rounded-2xl p-8 md:p-10 cute-shadow-lg border border-secondary/10 relative overflow-hidden">
+        <div class="absolute -top-4 -right-4 opacity-10">
+          <svg class="w-24 h-24"><use href="#cute-sun"/></svg>
+        </div>
+        <div class="flex items-start gap-4 mb-5">
+          <div class="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center flex-shrink-0 text-secondary text-lg">&#10024;</div>
+          <div>
+            <h2 class="font-display text-xl md:text-2xl text-primary tracking-tight">Central Thesis</h2>
+            <p class="text-muted text-xs uppercase tracking-wider font-bold mt-1">The Big Idea</p>
+          </div>
+        </div>
+        <p class="text-primary/80 leading-relaxed">
+          Vitamin D signaling is <em class="text-secondary font-bold">adaptively</em> beneficial, not inherently beneficial.
+          The health benefits of sun exposure actually derive from <strong class="text-secondary">cutaneous inflammation</strong>
+          (driving toxin excretion through skin) and <strong class="text-secondary">blood irradiation</strong>
+          (making red blood cells fitter and strengthening iron containment)&mdash;two mechanisms that work
+          <em>independently</em> of vitamin D synthesis.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Divider with sun -->
+  <div class="flex items-center justify-center gap-4 py-4">
+    <div class="h-px w-16 bg-gradient-to-r from-transparent to-secondary/20"></div>
+    <svg class="w-8 h-8 wiggle"><use href="#cute-sun"/></svg>
+    <div class="h-px w-16 bg-gradient-to-l from-transparent to-secondary/20"></div>
+  </div>
+
+  <!-- Three Pillars -->
+  <section class="py-16 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-12">
+        <p class="text-secondary text-xs font-bold uppercase tracking-widest mb-3">Chapter 1</p>
+        <h2 class="font-display text-2xl md:text-4xl text-primary tracking-tight">Sunshine vs. Supplementation</h2>
+        <p class="text-muted mt-3 max-w-lg mx-auto text-sm">A fresh look at the relationship between sunlight, vitamin D, and health</p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="bg-white rounded-2xl p-7 border border-gray-200 card-hover cute-shadow">
+          <div class="w-14 h-14 rounded-2xl bg-warning/10 flex items-center justify-center mb-5">
+            <svg class="w-10 h-10"><use href="#cute-sun"/></svg>
+          </div>
+          <h3 class="text-primary text-lg font-bold mb-2">Sunlight &#8800; Vitamin D</h3>
+          <p class="text-muted text-sm leading-relaxed">
+            They are <strong class="text-primary">separate entities</strong>. Health benefits attributed to vitamin D
+            are largely a byproduct of sunlight's direct elemental effects on the body.
+          </p>
+        </div>
+
+        <div class="bg-white rounded-2xl p-7 border border-gray-200 card-hover cute-shadow">
+          <div class="w-14 h-14 rounded-2xl bg-error/10 flex items-center justify-center mb-5 text-2xl">
+            &#10084;&#65039;
+          </div>
+          <h3 class="text-primary text-lg font-bold mb-2">Blood Gets "Fitter"</h3>
+          <p class="text-muted text-sm leading-relaxed">
+            Sunlight irradiates blood in dermal capillaries, making red blood cells more tenacious
+            and deformable&mdash;boosting circulation and <strong class="text-primary">iron containment</strong>.
+          </p>
+        </div>
+
+        <div class="bg-white rounded-2xl p-7 border border-gray-200 card-hover cute-shadow">
+          <div class="w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center mb-5 text-2xl">
+            &#10024;
+          </div>
+          <h3 class="text-primary text-lg font-bold mb-2">Skin Detoxification</h3>
+          <p class="text-muted text-sm leading-relaxed">
+            Sun-induced skin inflammation drives excretion of <strong class="text-primary">toxic elements</strong>
+            (aluminum, cadmium, lead) through the skin&mdash;a natural cleansing process.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Two Core Effects -->
+  <section id="effects" class="py-16 px-6 bg-surface">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-12">
+        <p class="text-secondary text-xs font-bold uppercase tracking-widest mb-3">The Two Pillars</p>
+        <h2 class="font-display text-2xl md:text-4xl text-primary tracking-tight">PFKE &amp; LITME</h2>
+        <p class="text-muted mt-3 max-w-lg mx-auto text-sm">Together, these two effects account for nearly all the health benefits of sun exposure</p>
+      </div>
+
+      <!-- PFKE Card -->
+      <div class="bg-white rounded-2xl p-8 md:p-10 cute-shadow-lg border border-gray-200 mb-8">
+        <div class="grid md:grid-cols-2 gap-8 items-start">
+          <div>
+            <div class="flex items-center gap-3 mb-4">
+              <span class="w-10 h-10 rounded-full bg-error/10 flex items-center justify-center text-error font-bold text-sm">P</span>
+              <div>
+                <h3 class="text-primary text-xl font-bold">Photo-Ferro-Kinetic Effect</h3>
+                <p class="text-muted text-xs">(PFKE)</p>
+              </div>
+            </div>
+            <p class="text-muted text-sm leading-relaxed mb-5">
+              When sunlight hits blood flowing through skin capillaries, it strengthens the body's
+              <strong class="text-primary">iron withholding defenses</strong>&mdash;making red blood cells
+              more resilient and improving overall circulation.
+            </p>
+            <div class="space-y-2.5">
+              <div class="flex items-center gap-2.5 text-sm">
+                <span class="w-5 h-5 rounded-full bg-success/10 flex items-center justify-center text-success text-xs flex-shrink-0">&#10003;</span>
+                <span class="text-muted">Improves circulation &amp; oxygen delivery</span>
+              </div>
+              <div class="flex items-center gap-2.5 text-sm">
+                <span class="w-5 h-5 rounded-full bg-success/10 flex items-center justify-center text-success text-xs flex-shrink-0">&#10003;</span>
+                <span class="text-muted">Enhances iron containment</span>
+              </div>
+              <div class="flex items-center gap-2.5 text-sm">
+                <span class="w-5 h-5 rounded-full bg-success/10 flex items-center justify-center text-success text-xs flex-shrink-0">&#10003;</span>
+                <span class="text-muted">Impedes age-related vascular decay</span>
+              </div>
+              <div class="flex items-center gap-2.5 text-sm">
+                <span class="w-5 h-5 rounded-full bg-success/10 flex items-center justify-center text-success text-xs flex-shrink-0">&#10003;</span>
+                <span class="text-muted">Supports vitD levels independently of synthesis</span>
+              </div>
+            </div>
+          </div>
+          <div class="bg-surface rounded-xl p-6 border border-secondary/10">
+            <p class="text-xs font-bold text-secondary uppercase tracking-wider mb-4 text-center">How it works</p>
+            <div class="flex items-center justify-center gap-2 flex-wrap mb-5">
+              <div class="bg-warning/10 rounded-xl px-4 py-3 text-center">
+                <svg class="w-8 h-8 mx-auto mb-1"><use href="#cute-sun"/></svg>
+                <span class="text-xs text-primary font-bold">Sunlight</span>
+              </div>
+              <span class="text-secondary text-xl font-bold">&rarr;</span>
+              <div class="bg-error/10 rounded-xl px-4 py-3 text-center">
+                <span class="text-2xl block mb-1">&#129656;</span>
+                <span class="text-xs text-primary font-bold">Blood</span>
+              </div>
+              <span class="text-secondary text-xl font-bold">&rarr;</span>
+              <div class="bg-success/10 rounded-xl px-4 py-3 text-center">
+                <span class="text-2xl block mb-1">&#128170;</span>
+                <span class="text-xs text-primary font-bold">Fitter RBCs</span>
+              </div>
+            </div>
+            <div class="border-l-3 border-secondary/30 pl-4 py-2">
+              <p class="text-xs text-muted italic leading-relaxed">
+                "Irradiated erythrocytes are made more tenacious and deformable, 'fitter'.
+                This improves circulation, iron containment, and impedes age-related decay."
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LITME Card -->
+      <div class="bg-white rounded-2xl p-8 md:p-10 cute-shadow-lg border border-gray-200">
+        <div class="grid md:grid-cols-2 gap-8 items-start">
+          <div class="order-2 md:order-1 bg-surface rounded-xl p-6 border border-secondary/10">
+            <p class="text-xs font-bold text-secondary uppercase tracking-wider mb-4 text-center">Detoxification Pathway</p>
+            <div class="flex items-center justify-center gap-2 flex-wrap mb-5">
+              <div class="bg-warning/10 rounded-xl px-4 py-3 text-center">
+                <svg class="w-8 h-8 mx-auto mb-1"><use href="#cute-sun"/></svg>
+                <span class="text-xs text-primary font-bold">UV Light</span>
+              </div>
+              <span class="text-secondary text-xl font-bold">&rarr;</span>
+              <div class="bg-warning/10 rounded-xl px-4 py-3 text-center">
+                <span class="text-2xl block mb-1">&#128293;</span>
+                <span class="text-xs text-primary font-bold">Skin<br>Response</span>
+              </div>
+              <span class="text-secondary text-xl font-bold">&rarr;</span>
+              <div class="bg-accent/10 rounded-xl px-4 py-3 text-center">
+                <span class="text-2xl block mb-1">&#10024;</span>
+                <span class="text-xs text-primary font-bold">Toxins<br>Out!</span>
+              </div>
+            </div>
+            <div class="border-l-3 border-secondary/30 pl-4 py-2">
+              <p class="text-xs text-muted italic leading-relaxed">
+                "LITME unburdens the sunbather of elemental toxins. Skin irradiation bolsters
+                the excretion of all surplus and non-essential elements."
+              </p>
+            </div>
+          </div>
+          <div class="order-1 md:order-2">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent font-bold text-sm">L</span>
+              <div>
+                <h3 class="text-primary text-xl font-bold">Light-Intensified Transcutaneous Mineral Excretion</h3>
+                <p class="text-muted text-xs">(LITME)</p>
+              </div>
+            </div>
+            <p class="text-muted text-sm leading-relaxed mb-5">
+              Sun-induced skin inflammation drives <strong class="text-primary">toxic element excretion</strong>
+              through the skin&mdash;a natural detoxification pathway that removes harmful minerals
+              which would otherwise accumulate in tissues.
+            </p>
+            <div class="space-y-2.5">
+              <div class="flex items-center gap-2.5 text-sm">
+                <span class="w-5 h-5 rounded-full bg-accent/10 flex items-center justify-center text-accent text-xs flex-shrink-0">&#10003;</span>
+                <span class="text-muted">Excretes aluminum, cadmium, lead, cobalt</span>
+              </div>
+              <div class="flex items-center gap-2.5 text-sm">
+                <span class="w-5 h-5 rounded-full bg-accent/10 flex items-center justify-center text-accent text-xs flex-shrink-0">&#10003;</span>
+                <span class="text-muted">Retards aging through reduced toxic burden</span>
+              </div>
+              <div class="flex items-center gap-2.5 text-sm">
+                <span class="w-5 h-5 rounded-full bg-accent/10 flex items-center justify-center text-accent text-xs flex-shrink-0">&#10003;</span>
+                <span class="text-muted">Prevents chronic metal accumulation diseases</span>
+              </div>
+              <div class="flex items-center gap-2.5 text-sm">
+                <span class="w-5 h-5 rounded-full bg-accent/10 flex items-center justify-center text-accent text-xs flex-shrink-0">&#10003;</span>
+                <span class="text-muted">Works via skin inflammation, not vitD pathways</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Iron Axis -->
+  <section id="iron" class="py-16 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-12">
+        <p class="text-secondary text-xs font-bold uppercase tracking-widest mb-3">Sections 14&ndash;17</p>
+        <h2 class="font-display text-2xl md:text-4xl text-primary tracking-tight">The VitD&ndash;Iron Axis</h2>
+        <p class="text-muted mt-3 max-w-lg mx-auto text-sm">Iron, not calcium, is proposed as the true biological "target" of the vitamin D system</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6 mb-10">
+        <!-- Iron -->
+        <div class="bg-white rounded-2xl p-7 border-2 border-secondary/20 card-hover cute-shadow relative overflow-hidden">
+          <div class="absolute top-3 right-3 bg-secondary/10 text-secondary text-xs font-bold px-2.5 py-1 rounded-full">Proposed</div>
+          <div class="flex items-center gap-3 mb-5">
+            <span class="bg-error/10 text-error font-bold px-3 py-1 rounded-lg text-sm">Fe</span>
+            <h4 class="text-primary text-lg font-bold">Iron (True Target?)</h4>
+          </div>
+          <div class="space-y-3 text-sm text-muted">
+            <p>&#9679; VitD suppresses hepcidin, directly increasing iron absorption</p>
+            <p>&#9679; <strong class="text-primary">Proximal</strong> small bowel enterocytes (iron zone) are most vitD-responsive</p>
+            <p>&#9679; Body needs only ~0.06 moles Fe &mdash; active transport makes sense</p>
+            <p>&#9679; ~30% of iron-deprivation genes are vitD-regulated</p>
+            <p>&#9679; VitD regulates transferrin &amp; transferrin receptor expression</p>
+            <p>&#9679; Iron chelators upregulate VDR synthesis</p>
+          </div>
+          <div class="mt-5 bg-secondary/5 rounded-lg p-3">
+            <p class="text-xs text-secondary font-bold">&#128161; The vitD system appears enlivened whenever iron is scarce.</p>
+          </div>
+        </div>
+
+        <!-- Calcium -->
+        <div class="bg-light rounded-2xl p-7 border border-gray-200 card-hover relative overflow-hidden">
+          <div class="absolute top-3 right-3 bg-gray-200 text-muted text-xs font-bold px-2.5 py-1 rounded-full">Conventional</div>
+          <div class="flex items-center gap-3 mb-5">
+            <span class="bg-gray-200 text-muted font-bold px-3 py-1 rounded-lg text-sm">Ca</span>
+            <h4 class="text-muted text-lg font-bold">Calcium (Not the Target?)</h4>
+          </div>
+          <div class="space-y-3 text-sm text-muted/70">
+            <p>&#9679; Body needs ~400x more Ca than Fe &mdash; active transport too risky at scale</p>
+            <p>&#9679; Ca is absorbed <em>passively</em> in distal bowel, even without vitD</p>
+            <p>&#9679; No limit to passive Ca absorption &mdash; unlimited Ca without vitD</p>
+            <p>&#9679; Active transport imports toxic elements alongside Ca</p>
+            <p>&#9679; Oral Ca supplements work fine without vitD</p>
+            <p>&#9679; VitD's calcemic effects come partly from bone resorption, not just absorption</p>
+          </div>
+          <div class="mt-5 bg-gray-200 rounded-lg p-3">
+            <p class="text-xs text-muted">VitD is proposed to be inessential for Ca absorption. The reality is more complex than commonly taught.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Iron Withholding Banner -->
+      <div class="bg-gradient-to-r from-primary to-secondary rounded-2xl p-8 md:p-10 text-white cute-shadow-lg">
+        <div class="grid md:grid-cols-[2fr_1fr] gap-8 items-center">
+          <div>
+            <h3 class="font-display text-xl md:text-2xl tracking-tight mb-4">Iron Withholding Defense System</h3>
+            <p class="text-white/70 text-sm leading-relaxed">
+              Historically, humans lost iron through blood loss (parasites, injuries). Modern life provides
+              unprecedented protection against iron loss, leaving most people in <strong class="text-accent">unnatural
+              iron repletion</strong>. PFKE via sun exposure strengthens the body's ability to contain this excess iron,
+              countering an evolutionary mismatch.
+            </p>
+          </div>
+          <div class="text-center">
+            <div class="inline-block bg-white/10 rounded-2xl p-6 border border-white/20">
+              <p class="font-display text-4xl text-accent mb-1">Fe</p>
+              <div class="text-white/60 text-xs space-y-1">
+                <p>More iron &rarr; more disease</p>
+                <p>More iron &rarr; faster aging</p>
+                <p class="text-accent font-bold">PFKE counters this!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Oral VitD Concerns -->
+  <section class="py-16 px-6 bg-surface">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-12">
+        <p class="text-warning text-xs font-bold uppercase tracking-widest mb-3">Sections 5&ndash;13</p>
+        <h2 class="font-display text-2xl md:text-4xl text-primary tracking-tight">Concerns About Oral Vitamin D</h2>
+        <p class="text-muted mt-3 max-w-lg mx-auto text-sm">The treatise raises questions about the safety of oral supplementation</p>
+      </div>
+
+      <div class="space-y-3 max-w-3xl mx-auto">
+        <details class="bg-white rounded-xl border border-gray-200 cute-shadow overflow-hidden group">
+          <summary class="p-5 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <span class="w-7 h-7 rounded-lg bg-warning/10 flex items-center justify-center text-warning font-bold text-xs">1</span>
+              <h4 class="font-bold text-primary text-sm">Bypasses bioregulatory steps</h4>
+            </div>
+            <span class="arrow text-muted text-sm">&#9654;</span>
+          </summary>
+          <div class="px-5 pb-5 text-sm text-muted leading-relaxed border-t border-gray-100 pt-4">
+            Oral vitD enters the blood through the absorptive epithelium, bypassing critical bioregulatory
+            steps that endogenous vitD must pass. This can deregulate dietary mineral absorption, and since
+            mineral transporters are indiscriminate, toxic elements get absorbed alongside essential ones.
+          </div>
+        </details>
+
+        <details class="bg-white rounded-xl border border-gray-200 cute-shadow overflow-hidden group">
+          <summary class="p-5 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <span class="w-7 h-7 rounded-lg bg-warning/10 flex items-center justify-center text-warning font-bold text-xs">2</span>
+              <h4 class="font-bold text-primary text-sm">Enhances toxic element absorption</h4>
+            </div>
+            <span class="arrow text-muted text-sm">&#9654;</span>
+          </summary>
+          <div class="px-5 pb-5 text-sm text-muted leading-relaxed border-t border-gray-100 pt-4">
+            Oral vitD has been shown to enhance absorption of every environmental toxin tested (except mercury):
+            Aluminum (Al), Cadmium (Cd), Cobalt (Co), and Lead (Pb). This is essentially the opposite of what
+            LITME achieves through skin excretion.
+          </div>
+        </details>
+
+        <details class="bg-white rounded-xl border border-gray-200 cute-shadow overflow-hidden group">
+          <summary class="p-5 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <span class="w-7 h-7 rounded-lg bg-warning/10 flex items-center justify-center text-warning font-bold text-xs">3</span>
+              <h4 class="font-bold text-primary text-sm">Creates an ironic feedback loop</h4>
+            </div>
+            <span class="arrow text-muted text-sm">&#9654;</span>
+          </summary>
+          <div class="px-5 pb-5 text-sm text-muted leading-relaxed border-t border-gray-100 pt-4">
+            The toxins brought in by oral vitD interfere with vitD metabolism itself, causing end-organ resistance.
+            Therapeutic effects fade, vitD levels drop, prompting more supplementation&mdash;a self-reinforcing
+            cycle where oral vitD antagonizes its own biological activity.
+          </div>
+        </details>
+
+        <details class="bg-white rounded-xl border border-gray-200 cute-shadow overflow-hidden group">
+          <summary class="p-5 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <span class="w-7 h-7 rounded-lg bg-warning/10 flex items-center justify-center text-warning font-bold text-xs">4</span>
+              <h4 class="font-bold text-primary text-sm">Increases iron burden without increasing excretion</h4>
+            </div>
+            <span class="arrow text-muted text-sm">&#9654;</span>
+          </summary>
+          <div class="px-5 pb-5 text-sm text-muted leading-relaxed border-t border-gray-100 pt-4">
+            Oral vitD boosts iron absorption <em>without</em> boosting iron excretion, elevating total iron burden.
+            Since excess iron is linked to vascular disease, malignancies, and accelerated aging, this
+            supplementation may act as a chronic stimulus for iron accumulation.
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison -->
+  <section id="compare" class="py-16 px-6">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-12">
+        <p class="text-secondary text-xs font-bold uppercase tracking-widest mb-3">Side by Side</p>
+        <h2 class="font-display text-2xl md:text-4xl text-primary tracking-tight">Sun Exposure vs. Oral VitD</h2>
+        <p class="text-muted mt-3 text-sm">Two fundamentally opposite approaches</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-4 max-w-4xl mx-auto">
+        <!-- Sun -->
+        <div class="bg-surface rounded-2xl p-7 border border-secondary/10 cute-shadow">
+          <div class="text-center mb-5">
+            <svg class="w-16 h-16 mx-auto mb-3 float"><use href="#cute-sun"/></svg>
+            <h3 class="text-primary text-lg font-bold">Sun Exposure</h3>
+            <span class="text-xs font-bold text-success bg-success/10 px-3 py-1 rounded-full">Detoxification</span>
+          </div>
+          <div class="space-y-3 text-sm">
+            <div class="flex items-center gap-2.5 text-success"><span>&#9650;</span><span>Excretes toxic elements (LITME)</span></div>
+            <div class="flex items-center gap-2.5 text-success"><span>&#9650;</span><span>Strengthens iron withholding (PFKE)</span></div>
+            <div class="flex items-center gap-2.5 text-success"><span>&#9650;</span><span>Mitigates metal toxicoses</span></div>
+            <div class="flex items-center gap-2.5 text-success"><span>&#9650;</span><span>Supports brain development</span></div>
+            <div class="flex items-center gap-2.5 text-success"><span>&#9650;</span><span>Retards aging</span></div>
+            <div class="flex items-center gap-2.5 text-success"><span>&#9650;</span><span>Ameliorates inflammation</span></div>
+          </div>
+          <div class="mt-5 text-center">
+            <span class="text-xs font-bold text-success bg-success/10 px-4 py-2 rounded-full">&#10024; Toxins OUT</span>
+          </div>
+        </div>
+
+        <!-- Oral VitD -->
+        <div class="bg-light rounded-2xl p-7 border border-gray-200 cute-shadow">
+          <div class="text-center mb-5">
+            <div class="text-5xl mb-3 float-delay">&#128138;</div>
+            <h3 class="text-primary text-lg font-bold">Oral Vitamin D</h3>
+            <span class="text-xs font-bold text-error bg-error/10 px-3 py-1 rounded-full">Intoxication</span>
+          </div>
+          <div class="space-y-3 text-sm">
+            <div class="flex items-center gap-2.5 text-error"><span>&#9660;</span><span>Absorbs more toxic elements</span></div>
+            <div class="flex items-center gap-2.5 text-error"><span>&#9660;</span><span>Increases iron burden</span></div>
+            <div class="flex items-center gap-2.5 text-error"><span>&#9660;</span><span>Exacerbates metal toxicities</span></div>
+            <div class="flex items-center gap-2.5 text-error"><span>&#9660;</span><span>Proposed neurotoxic effects</span></div>
+            <div class="flex items-center gap-2.5 text-error"><span>&#9660;</span><span>May accelerate aging</span></div>
+            <div class="flex items-center gap-2.5 text-error"><span>&#9660;</span><span>Antagonizes its own activity</span></div>
+          </div>
+          <div class="mt-5 text-center">
+            <span class="text-xs font-bold text-error bg-error/10 px-4 py-2 rounded-full">&#9888; Toxins IN</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Implications -->
+  <section class="py-16 px-6 bg-gradient-to-br from-primary to-secondary text-white">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-12">
+        <p class="text-accent text-xs font-bold uppercase tracking-widest mb-3">Looking Forward</p>
+        <h2 class="font-display text-2xl md:text-4xl text-white tracking-tight">Proposed Implications</h2>
+        <p class="text-white/50 mt-3 max-w-lg mx-auto text-sm">
+          If validated, these mechanisms could reshape preventive medicine
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div class="bg-white/5 rounded-xl p-6 border border-white/10 card-hover">
+          <div class="text-2xl mb-3">&#129504;</div>
+          <h4 class="font-bold text-accent text-sm mb-2">Neurological Health</h4>
+          <p class="text-white/50 text-xs leading-relaxed">
+            Regular heliotherapy could reduce neurodegenerative diseases, autism, and cognitive
+            decline by reducing neurotoxic metal accumulation.
+          </p>
+        </div>
+        <div class="bg-white/5 rounded-xl p-6 border border-white/10 card-hover">
+          <div class="text-2xl mb-3">&#10084;&#65039;</div>
+          <h4 class="font-bold text-accent text-sm mb-2">Cardiovascular</h4>
+          <p class="text-white/50 text-xs leading-relaxed">
+            Managing iron stores and reducing toxic metal burden may address root causes
+            of vascular disease, not just correlate with vitD levels.
+          </p>
+        </div>
+        <div class="bg-white/5 rounded-xl p-6 border border-white/10 card-hover">
+          <div class="text-2xl mb-3">&#9201;</div>
+          <h4 class="font-bold text-accent text-sm mb-2">Aging &amp; Longevity</h4>
+          <p class="text-white/50 text-xs leading-relaxed">
+            Excess iron and toxic metals are positioned as central aging drivers.
+            PFKE and LITME directly counteract these processes.
+          </p>
+        </div>
+        <div class="bg-white/5 rounded-xl p-6 border border-white/10 card-hover">
+          <div class="text-2xl mb-3">&#127974;</div>
+          <h4 class="font-bold text-accent text-sm mb-2">Clinical Practice</h4>
+          <p class="text-white/50 text-xs leading-relaxed">
+            The author proposes oral vitD should eventually be prescription-only,
+            administered via transdermal, IV, or subcutaneous routes.
+          </p>
+        </div>
+        <div class="bg-white/5 rounded-xl p-6 border border-white/10 card-hover">
+          <div class="text-2xl mb-3">&#127793;</div>
+          <h4 class="font-bold text-accent text-sm mb-2">Public Health</h4>
+          <p class="text-white/50 text-xs leading-relaxed">
+            A return to heliotherapy plus retirement of oral vitD could lower
+            all-cause morbidity and mortality to new record lows.
+          </p>
+        </div>
+        <div class="bg-white/5 rounded-xl p-6 border border-white/10 card-hover">
+          <div class="text-2xl mb-3">&#128300;</div>
+          <h4 class="font-bold text-accent text-sm mb-2">Research Needed</h4>
+          <p class="text-white/50 text-xs leading-relaxed">
+            Longitudinal studies comparing sun-only cohorts against supplement users
+            to differentiate sunlight effects from vitamin D.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Glossary -->
+  <section class="py-16 px-6">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-10">
+        <p class="text-secondary text-xs font-bold uppercase tracking-widest mb-3">Reference</p>
+        <h2 class="font-display text-2xl md:text-3xl text-primary tracking-tight">Key Terms</h2>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div class="bg-surface rounded-lg p-4 border border-secondary/10">
+          <p class="text-secondary text-xs font-bold">PFKE</p>
+          <p class="text-muted text-xs mt-1">Photo-Ferro-Kinetic Effect &mdash; iron withholding via blood irradiation</p>
+        </div>
+        <div class="bg-surface rounded-lg p-4 border border-secondary/10">
+          <p class="text-secondary text-xs font-bold">LITME</p>
+          <p class="text-muted text-xs mt-1">Light-Intensified Transcutaneous Mineral Excretion &mdash; toxin removal through skin</p>
+        </div>
+        <div class="bg-surface rounded-lg p-4 border border-secondary/10">
+          <p class="text-secondary text-xs font-bold">SE</p>
+          <p class="text-muted text-xs mt-1">Sun Exposure &mdash; full-spectrum sunlight irradiation</p>
+        </div>
+        <div class="bg-surface rounded-lg p-4 border border-secondary/10">
+          <p class="text-secondary text-xs font-bold">PRx</p>
+          <p class="text-muted text-xs mt-1">Photo-Therapy &mdash; therapeutic light wavelength exposure</p>
+        </div>
+        <div class="bg-surface rounded-lg p-4 border border-secondary/10">
+          <p class="text-secondary text-xs font-bold">IWDS</p>
+          <p class="text-muted text-xs mt-1">Iron Withholding Defense System(s) &mdash; iron containment mechanisms</p>
+        </div>
+        <div class="bg-surface rounded-lg p-4 border border-secondary/10">
+          <p class="text-secondary text-xs font-bold">VDR</p>
+          <p class="text-muted text-xs mt-1">Vitamin D Receptor &mdash; nuclear receptor activated by calcitriol</p>
+        </div>
+        <div class="bg-surface rounded-lg p-4 border border-secondary/10">
+          <p class="text-secondary text-xs font-bold">PM(s)</p>
+          <p class="text-muted text-xs mt-1">Pathological Mineral(s) &mdash; calcifications, kidney stones, mineral deposits</p>
+        </div>
+        <div class="bg-surface rounded-lg p-4 border border-secondary/10">
+          <p class="text-secondary text-xs font-bold">FGF23</p>
+          <p class="text-muted text-xs mt-1">Fibroblast Growth Factor 23 &mdash; phosphate regulation hormone</p>
+        </div>
+        <div class="bg-surface rounded-lg p-4 border border-secondary/10">
+          <p class="text-secondary text-xs font-bold">SA</p>
+          <p class="text-muted text-xs mt-1">Sun Avoidance &mdash; the modern trend of limiting sun exposure</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-primary py-10 px-6">
+    <div class="max-w-4xl mx-auto text-center">
+      <svg class="w-12 h-12 mx-auto mb-4 wiggle"><use href="#cute-sun"/></svg>
+      <p class="text-white/50 text-xs mb-1">
+        Based on the treatise by <strong class="text-white/70">David Wendlandt, M.D.</strong>
+      </p>
+      <p class="text-white/30 text-xs max-w-md mx-auto leading-relaxed">
+        "Newly Uncovered Fundamentals of Sunlight in Vertebrate Biology"
+      </p>
+      <p class="text-white/20 text-xs mt-6">
+        This visualization presents the author's perspective for informational purposes.
+      </p>
+    </div>
+  </footer>
+
+</body>
+</html>
